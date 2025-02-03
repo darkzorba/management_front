@@ -1,0 +1,114 @@
+<div class="tab-pane show active" role="tabpanel">
+  <form class="form-group" (ngSubmit)="enviarTarefa()" [formGroup]="formGroup">
+    <div class="row mt-n3 p-2 pb-4 justify-content-center">
+       <div class="row pt-3 px-2">
+         <div class="form-group col-8 offset-2">
+           <label for="servico" class="font-weight-semibold text-muted text-uppercase">
+             Servico:
+           </label>
+           <div class="py-2">
+              <input
+                id="servico"
+                class="form-control text-muted w-100"
+                placeholder="Digite os 3 primeiros caracteres"
+                (input)="onServicoChange($event)"
+                (blur)="fecharDropdown('dropdownServicoAberto')"
+                (focus)="abrirDropdown('servicos','dropdownServicoAberto')"
+                [value]="servicoSelecionado?.nome  || ''"
+                autocomplete="off"
+              />
+            </div>
+            <!-- Dropdown de sugestões -->
+            <ul class="dropdown-menu text-muted" [class.show]="dropdownServicoAberto && servicos.length > 0">
+              @for (servico of servicos; track servico.id){
+              <li (click)="selecionarServico(servico)">
+                <a class="dropdown-item font-weight-semibold text-muted text-uppercase small py-1">
+                  {{ servico.nome }}
+                </a>
+              </li>}
+            </ul>
+            <div
+              *ngIf="formGroup.get('servico')?.invalid && formGroup.get('servico')?.touched"
+              class="text-danger small"
+            >
+              Servico é obrigatório.
+          </div>
+          <label for="responsavelId" class="font-weight-semibold text-muted text-uppercase">
+            Hash Responsável:
+          </label>
+             <div class="py-2">
+              <input
+                id="responsavelId"
+                class="form-control text-muted w-100"
+                placeholder="Digite os 3 primeiros caracteres"
+                (input)="onResponsavelChange($event)"
+                (blur)="fecharDropdown('dropdownUserAberto')"
+                (focus)="abrirDropdown('users','dropdownUserAberto')"
+                [value]="responsavelSelecionado?.nome  || ''"
+                autocomplete="off"
+              />
+            </div>
+            <!-- Dropdown de sugestões -->
+            <ul class="dropdown-menu text-muted" [class.show]="dropdownUserAberto && users.length > 0">
+              @for (responsavel of users; track responsavel.id){
+              <li (click)="selecionarResponsavel(responsavel)">
+                <a class="dropdown-item font-weight-semibold text-muted text-uppercase small py-1">
+                  {{ responsavel.nome }}
+                </a>
+              </li>}
+            </ul>
+            <div
+              *ngIf="formGroup.get('responsavelId')?.invalid && formGroup.get('responsavelId')?.touched"
+              class="text-danger small"
+            >
+              Responsável é obrigatório.
+          </div>
+           <label for="data" class="font-weight-semibold text-muted text-uppercase">
+            Data:
+          </label>
+           <input id="data" type="date" formControlName="data" class="form-control text-muted w-100">
+           <label for="cliente" class="font-weight-semibold text-muted text-uppercase">
+            Cliente:
+          </label>
+           <div class="py-2">
+              <input
+                id="cliente"
+                class="form-control text-muted w-100"
+                placeholder="Digite os 3 primeiros caracteres"
+                (input)="onClienteChange($event)"
+                (blur)="fecharDropdown('dropdownClienteAberto')"
+                (focus)="abrirDropdown('clientes','dropdownClienteAberto')"
+                [value]="clienteSelecionado?.nome  || ''"
+                autocomplete="off"
+              />
+            </div>
+            <!-- Dropdown de sugestões -->
+            <ul class="dropdown-menu text-muted" [class.show]="dropdownClienteAberto && clientes.length > 0">
+              @for (cliente of clientes; track cliente.id){
+              <li (click)="selecionarCliente(cliente)">
+                <a class="dropdown-item font-weight-semibold text-muted text-uppercase small py-1">
+                  {{ cliente.nome }}
+                </a>
+              </li>}
+            </ul>
+            <div
+              *ngIf="formGroup.get('cliente')?.invalid && formGroup.get('cliente')?.touched"
+              class="text-danger small"
+            >
+              Cliente é obrigatório.
+          </div>
+           <label for="horario" class="font-weight-semibold text-muted text-uppercase">
+            Horário:
+          </label>
+           <input id="horario" type="time" formControlName="horario" class="form-control text-muted w-100">
+           <button class="btn btn-primary btn-custom mt-3" type="submit" >Salvar</button>
+          </div>
+       </div>
+    </div>
+  </form>
+</div>
+
+
+
+
+

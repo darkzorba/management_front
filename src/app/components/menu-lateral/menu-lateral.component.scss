@@ -1,0 +1,114 @@
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 60px; /* Sidebar minimizada */
+  height: 100vh;
+  background-color: #F0F0F0;
+  transition: width 0.3s ease;
+  z-index: 1;
+}
+
+.sidebar.expanded {
+  width: 200px; /* Sidebar expandida */
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 20px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  color: #000000;
+  padding: 15px 20px;
+  text-decoration: none;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+  position: relative; /* Adicione isso */
+}
+
+/* Adiciona ícones com espaçamento */
+.nav-link i {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.link-text {
+  display: none;
+}
+
+/* Expande a sidebar quando o mouse passar por cima ou quando a variável isSidebarOpen for true */
+.sidebar.expanded .link-text {
+  display: inline-block;
+}
+
+/* Exibe o texto e ícones com mais espaço quando a sidebar for expandida */
+.sidebar.expanded .nav-link {
+  padding: 15px 30px;
+}
+
+/* Hover nos itens do menu */
+.nav-link:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+
+/* Linha animada */
+.nav-link::after {
+  content: ''; /* Cria o pseudo-elemento */
+  position: absolute;
+  left: 20px; /* Ajuste para o mesmo valor do padding-left */
+  bottom: 10px; /* Ajuste para posicionar a linha abaixo do texto */
+  width: 0; /* Inicialmente, a linha tem largura 0 */
+  height: 2px; /* Altura da linha */
+  background-color: #000080; /* Cor da linha */
+  transition: width 0.3s ease; /* Animação suave */
+}
+
+.nav-link:hover::after {
+  width: calc(100% - 40px); /* Expande a linha, considerando o padding */
+}
+
+/* Ajuste para a sidebar expandida */
+.sidebar.expanded .nav-link::after {
+  left: 30px; /* Ajuste para o mesmo valor do padding-left expandido */
+}
+
+.sidebar.expanded .nav-link:hover::after {
+  width: calc(100% - 60px); /* Expande a linha, considerando o padding expandido */
+}
+
+/* Estilos para o submenu */
+.nav-item ul {
+  display: none; /* Submenu oculto por padrão */
+  padding-left: 15px; /* Indentação para os itens do submenu */
+}
+
+.nav-item.open ul {
+  display: block; /* Exibe o submenu quando o item está 'open' */
+}
+
+.nav-item .nav-link {
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+/* Estilo para os itens do submenu */
+.nav-item ul .nav-item .nav-link {
+  font-size: 16px;
+  color: #666;
+}
+
+.nav-item ul .nav-item .nav-link:hover {
+  background-color: #e2e2e2;
+}
+
+/* Estilos para o item desabilitado (quando a sidebar não está expandida) */
+.nav-item.disabled .nav-link {
+  pointer-events: none;
+  opacity: 0.6;
+}

@@ -1,0 +1,154 @@
+<div class="card card-custom mt-3 d-flex card-superior justify-content-center p-3">
+    <form class="form" (ngSubmit)="buscarTarefas()" [formGroup]="formGroup">
+    <div class="d-flex align-items-end gap-3">
+
+        <!-- Campo de Data -->
+        <div class="d-flex flex-column">
+            <label for="data" class="card-text text-muted">Selecione a Data:</label>
+            <input formControlName="data" class="form-control" type="date" id="data" style="border-radius: 5px; max-width: 150px;">
+        </div>
+
+        <!-- Campo Hora Inicial -->
+        <div class="d-flex flex-column">
+            <label for="hora-inicial" class="card-text text-muted">Hora Inicial:</label>
+            <input formControlName="horaIni" id="hora-inicial" type="time" [(ngModel)]="horaIni" class="form-control" style="max-width: 120px;">
+        </div>
+
+        <!-- Campo Hora Final -->
+        <div class="d-flex flex-column">
+            <label for="hora-final" class="card-text text-muted">Hora Final:</label>
+            <input formControlName="horaFim" id="hora-final" type="time" [(ngModel)]="horaFim" class="form-control" style="max-width: 120px;">
+        </div>
+        <button class="btn btn-primary" type="submit"> Filtrar</button>
+    </div>
+  </form>
+
+</div>
+<div class="card mt-3 card-superior position-absolute" style="background-color: lightgrey;">
+  <div class="card-body">
+    <div class="grid-container">
+      <ng-container *ngFor="let horario of horarios">
+        <!-- Coluna da Esquerda: Horário -->
+        <div class="horario-label text-dark p-2">
+          {{ horario }}
+        </div>
+
+        <!-- Coluna da Direita: Tarefas Correspondentes -->
+      <div class="tarefas-container">
+        <ng-container *ngFor="let tarefa of getTarefasPorHorario(horario)">
+          <div class="card tarefa-card p-1 mb-2 bg-grey">
+              <div class="card-body p-2 position-relative">
+              <!-- Ícone Editar -->
+              <i class="fa-solid fa-pen close-icon"
+                 data-bs-toggle="tooltip"
+                 title="Editar"
+                 (click)="abrirModal(tarefa.id,'editarModal')"></i>
+
+              <!-- Ícone Pagamento -->
+              <i class="fa-solid fa-dollar-sign close-icon"
+                 data-bs-toggle="tooltip"
+                 title="Pagamento"
+                 (click)="abrirModal(tarefa.id,'pagamentoModal')"></i>
+
+              <div class="d-flex justify-content-start mb-1">
+                <div class="text-white font-weight-bold" style="font-size: 1.1em;">
+                  <strong>{{ tarefa.nm_servico }}</strong>
+                </div>
+              </div>
+              <div class="card-text text-white" style="font-size: 0.85em;">
+                <div><strong>Duração:</strong> {{ tarefa.duracao }}</div>
+                <div><strong>R$</strong> {{ tarefa.valor }}</div>
+                <div><strong>Responsável:</strong> {{ tarefa.nm_responsavel }}</div>
+                <div><strong>Cliente:</strong> {{ tarefa.nm_cliente }}</div>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+      </div>
+
+      </ng-container>
+    </div>
+  </div>
+</div>
+<!-- Modal de Edição -->
+<div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editarModalLabel">Editar Tarefa</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+      <form class="form-group"  [formGroup]="tarefaGroup">
+    <div class="row mt-n3 p-2 pb-4 justify-content-center">
+       <div class="row pt-3 px-2">
+         <div class="form-group col-8 offset-2">
+          <label for="responsavelId" class="font-weight-semibold text-muted text-uppercase">
+            Hash Responsável:
+          </label>
+             <div class="py-2">
+              <input
+                id="responsavelId"
+                class="form-control text-muted w-100"
+                placeholder="Digite os 3 primeiros caracteres"
+                (input)="onResponsavelChange($event)"
+                (blur)="fecharDropdown('dropdownUserAberto')"
+                (focus)="abrirDropdown('users','dropdownUserAberto')"
+                [value]="responsavelSelecionado?.nome  || ''"
+                autocomplete="off"
+              />
+            </div>
+            <!-- Dropdown de sugestões -->
+            <ul class="dropdown-menu text-muted" [class.show]="dropdownUserAberto && users.length > 0">
+              @for (responsavel of users; track responsavel.id){
+              <li (click)="selecionarResponsavel(responsavel)">
+                <a class="dropdown-item font-weight-semibold text-muted text-uppercase small py-1">
+                  {{ responsavel.nome }}
+                </a>
+              </li>}
+            </ul>
+           <label for="dataid" class="font-weight-semibold text-muted text-uppercase">
+            Data:
+          </label>
+           <input id="dataid" type="date" formControlName="data" class="form-control text-muted w-100">
+           <label for="horario" class="font-weight-semibold text-muted text-uppercase">
+            Horário:
+          </label>
+           <input id="horario" type="time" formControlName="horario" class="form-control text-muted w-100">
+          </div>
+       </div>
+    </div>
+  </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-primary" (click)="editarTarefa()" data-bs-dismiss="modal">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Pagamento -->
+<div class="modal fade" id="pagamentoModal" tabindex="-1" aria-labelledby="pagamentoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pagamentoModalLabel">Pagamento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <p>Detalhes do pagamento desta tarefa.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-success">Pagar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+

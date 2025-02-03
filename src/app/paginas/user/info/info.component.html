@@ -1,0 +1,30 @@
+<div class="card card-custom mt-3 d-flex card-superior">
+  <div class="card-body d-flex align-items-start">
+    <a class="card-subtitle"><img src="user.png" width="100" height="100"></a>
+    <div class="d-flex flex-column align-items-start">
+      <div class="d-flex align-items-center mb-2">
+        <label for="email" class="card-text text-muted me-2 spacing-top">
+          Email:
+        </label>
+        <span id="email" class="card-text fw-semibold spacing-top">{{user?.email}}</span>
+      </div>
+      <div class="d-flex align-items-center">
+        <label for="cpf" class="card-text text-muted me-2 ">
+          CPF:
+        </label>
+        <span id="cpf" class="card-text fw-semibold ">{{user?.cpf}}</span>
+      </div>
+    </div>
+     <div class="d-flex flex-column align-items-start">
+      <div class="d-flex align-items-center offset-2 mb-2">
+        <label for="cargo" class="card-text text-muted me-2 spacing-top">
+          Cargo:
+        </label>
+        <span id="cargo" class="card-text fw-semibold spacing-top">{{ user?.cargo }}</span>
+      </div>
+    </div>
+    <h1 class="card-text mb-0 mt-4 d-flex justify-content-center offset-1" style="font-size: 2rem;">
+      {{ "" }} - {{ user?.nm_completo }}
+    </h1>
+  </div>
+</div>
